@@ -4,7 +4,7 @@ doingfb-coin-exchange:
       enabled_label: 启用硬币兑换功能
       enabled_help: 开启后用户可以将论坛硬币兑换为商家平台积分
       api_url_label: 商家平台 API 地址
-      api_url_help: 例如：https://your-domain.com/api/exchange/coins-to-points
+      api_url_help: "例如：https://your-domain.com/api/exchange/coins-to-points"
       api_secret_label: API 密钥
       api_secret_help: 与商家平台配置的密钥必须一致
       daily_limit_label: 每日兑换限额（硬币）

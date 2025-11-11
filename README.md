@@ -1,56 +1,88 @@
-# Flarum 硬币兑换积分扩展
+# Flarum Coin Exchange Extension
 
-将 Flarum 论坛的硬币兑换为商家平台的积分。
+Exchange Flarum forum coins for merchant platform points.
 
-## 功能特性
+## ✅ Production Ready
 
-- ✅ 一键兑换论坛硬币为商家平台积分
-- ✅ 兑换比例：1 积分 = 10 硬币
-- ✅ 每日兑换限额控制（默认 1000 硬币/天）
-- ✅ 实时余额显示
-- ✅ 安全的 SHA256 签名验证
-- ✅ 防重放攻击机制
-- ✅ 友好的用户界面
-- ✅ 中英文双语支持
+**Version 1.0.1** is ready for production use with:
+- Database transaction protection
+- Complete daily limit checking
+- Error logging and monitoring
+- Automatic rollback on failures
 
-## 安装方法
+**See [DEPLOYMENT.md](DEPLOYMENT.md) for detailed deployment guide.**
 
-### 方法 1：Composer 安装（推荐）
+---
+
+## Features
+
+- ✅ One-click exchange of forum coins for merchant platform points
+- ✅ Exchange rate: 1 point = 10 coins
+- ✅ Daily exchange limit control (default 1000 coins/day)
+- ✅ Real-time balance display
+- ✅ Secure SHA256 signature verification
+- ✅ Anti-replay attack mechanism
+- ✅ User-friendly interface
+- ✅ Bilingual support (English & Chinese)
+- ✅ **Database transaction protection**
+- ✅ **Complete audit logging**
+- ✅ **Automatic rollback on failures**
+
+---
+
+## Installation
+
+### Quick Start
 
 ```bash
 composer require doingfb/flarum-coin-exchange
+php flarum cache:clear
+php flarum migrate
 ```
 
-### 方法 2：手动安装
+Then enable the extension in admin panel and configure settings.
 
-1. 将此扩展文件夹复制到 Flarum 的 `extensions` 目录
-2. 在 Flarum 管理后台启用此扩展
+**⚠️ Important:** Before deploying to production, read [DEPLOYMENT.md](DEPLOYMENT.md) for:
+- Database migration verification
+- Coin field name confirmation
+- Security checklist
+- Monitoring setup
 
-## 配置步骤
+### Manual Installation
 
-### 1. 在 Flarum 管理后台配置
+1. Copy this extension folder to Flarum's `extensions` directory
+2. Enable the extension in Flarum admin panel
+3. Run database migrations
 
-进入 **管理后台 > 扩展 > 硬币兑换积分**，配置以下信息：
+---
 
-- **启用功能**：开启硬币兑换功能
-- **API 地址**：商家平台的 API 端点
+## Configuration
+
+### 1. Flarum Admin Panel
+
+Go to **Admin > Extensions > Coin Exchange** and configure:
+
+- **Enable Feature**: Turn on coin exchange functionality
+- **API URL**: Merchant platform API endpoint
   ```
   https://your-merchant-platform.com/api/exchange/coins-to-points
   ```
-- **API 密钥**：与商家平台配置的密钥一致
+- **API Secret**: Secret key matching merchant platform (64-char SHA256 string)
   ```
   E483D0FCDCA7D2A900F679BFBE149BB34FE518A149BB8B7529EB0FCA6773BF45
   ```
-- **每日限额**：用户每天最多可兑换的硬币数量（默认 1000）
+- **Daily Limit**: Maximum coins per user per day (default: 1000)
 
-### 2. 确保商家平台已配置
+### 2. Merchant Platform Requirements
 
-商家平台需要：
-- ✅ 已部署 `/api/exchange/coins-to-points` 接口
-- ✅ 已配置相同的 API 密钥
-- ✅ 用户已在商家平台注册（使用相同邮箱）
+The merchant platform must have:
+- ✅ Deployed `/api/exchange/coins-to-points` endpoint
+- ✅ Configured same API secret key
+- ✅ Users registered with same email addresses
 
-## 使用方法
+---
+
+## Usage
 
 ### 用户端
 

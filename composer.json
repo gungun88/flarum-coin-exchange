@@ -1,6 +1,7 @@
 {
     "name": "doingfb/flarum-coin-exchange",
-    "description": "Exchange forum coins for merchant platform points",
+    "description": "Exchange forum coins for merchant platform points (Production Ready)",
+    "version": "1.0.1",
     "keywords": [
         "flarum",
         "extension",
@@ -31,7 +32,7 @@
     },
     "extra": {
         "flarum-extension": {
-            "title": "硬币兑换积分",
+            "title": "Coin Exchange",
             "category": "feature",
             "icon": {
                 "name": "fas fa-coins",

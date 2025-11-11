@@ -39,4 +39,8 @@ return [
         ->serializeToForum('coinExchange.enabled', 'coin_exchange_enabled', function ($value) {
             return (bool) $value;
         }),
+
+    // 注册数据库迁移
+    (new Extend\Migration())
+        ->add(__DIR__.'/migrations/2025_01_12_000000_create_coin_exchange_records_table.php'),
 ];

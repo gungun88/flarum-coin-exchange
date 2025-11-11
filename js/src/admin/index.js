@@ -2,7 +2,7 @@ import app from 'flarum/admin/app';
 
 app.initializers.add('doingfb/flarum-coin-exchange', () => {
   app.extensionData
-    .for('doingfb-flarum-coin-exchange')
+    .for('doingfb-coin-exchange')
     .registerSetting({
       setting: 'coin_exchange_enabled',
       label: app.translator.trans('doingfb-coin-exchange.admin.settings.enabled_label'),

@@ -1,0 +1,26 @@
+# Dependencies
+/node_modules
+/vendor
+
+# Build output
+# /js/dist  # 注释掉,允许上传构建后的文件
+*.js.map
+
+# IDE
+.idea
+.vscode
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# Environment
+.env
+.env.local

@@ -15,10 +15,15 @@
     },
     "authors": [
         {
-            "name": "DoingFB",
-            "email": "info@doingfb.com"
+            "name": "gungun88",
+            "email": "noreply@github.com",
+            "homepage": "https://github.com/gungun88"
         }
     ],
+    "support": {
+        "issues": "https://github.com/gungun88/flarum-coin-exchange/issues",
+        "source": "https://github.com/gungun88/flarum-coin-exchange"
+    },
     "autoload": {
         "psr-4": {
             "DoingFB\\CoinExchange\\": "src/"

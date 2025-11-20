@@ -1,0 +1,18 @@
+{
+  "name": "@doingfb/flarum-coin-exchange",
+  "version": "1.0.0",
+  "description": "Exchange forum coins for merchant platform points",
+  "keywords": [
+    "flarum-extension"
+  ],
+  "license": "MIT",
+  "scripts": {
+    "dev": "webpack --mode development --watch",
+    "build": "webpack --mode production"
+  },
+  "devDependencies": {
+    "flarum-webpack-config": "^2.0.0",
+    "webpack": "^5.0.0",
+    "webpack-cli": "^5.0.0"
+  }
+}

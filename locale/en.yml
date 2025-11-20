@@ -1,0 +1,20 @@
+doingfb-coin-exchange:
+  admin:
+    settings:
+      enabled_label: Enable Coin Exchange
+      enabled_help: Allow users to exchange forum coins for merchant platform points
+      api_url_label: Merchant Platform API URL
+      api_url_help: "Example: https://your-domain.com/api/exchange/coins-to-points"
+      api_secret_label: API Secret Key
+      api_secret_help: Must match the secret key configured on the merchant platform
+      daily_limit_label: Daily Exchange Limit (Coins)
+      daily_limit_help: "Maximum coins each user can exchange per day (default: 1000)"
+
+  forum:
+    user_controls:
+      coin_exchange_button: Exchange Points
+    modal:
+      title: Exchange Coins for Points
+      coin_amount_label: Coin Amount
+      submit: Exchange Now
+      close: Close

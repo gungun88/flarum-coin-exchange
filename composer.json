@@ -1,0 +1,60 @@
+{
+    "name": "doingfb/flarum-coin-exchange",
+    "description": "Exchange forum coins for merchant platform points (Production Ready)",
+    "version": "1.1.0",
+    "keywords": [
+        "flarum",
+        "extension",
+        "coin",
+        "exchange",
+        "points"
+    ],
+    "type": "flarum-extension",
+    "license": "MIT",
+    "require": {
+        "flarum/core": "^1.8.0"
+    },
+    "authors": [
+        {
+            "name": "gungun88",
+            "email": "noreply@github.com",
+            "homepage": "https://github.com/gungun88"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/gungun88/flarum-coin-exchange/issues",
+        "source": "https://github.com/gungun88/flarum-coin-exchange"
+    },
+    "autoload": {
+        "psr-4": {
+            "DoingFB\\CoinExchange\\": "src/"
+        }
+    },
+    "extra": {
+        "flarum-extension": {
+            "title": "Coin Exchange",
+            "category": "feature",
+            "icon": {
+                "name": "fas fa-coins",
+                "color": "#FFD700",
+                "backgroundColor": "#1a1a1a"
+            }
+        },
+        "flarum-cli": {
+            "modules": {
+                "admin": true,
+                "forum": true,
+                "js": true,
+                "jsCommon": false,
+                "css": true,
+                "gitConf": true,
+                "githubActions": true,
+                "prettier": true,
+                "bundlewatch": false,
+                "backendTesting": true,
+                "editorConfig": true,
+                "styleci": true
+            }
+        }
+    }
+}

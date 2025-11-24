@@ -8,6 +8,7 @@ use Flarum\User\Exception\PermissionDeniedException;
 use Illuminate\Support\Arr;
 use Illuminate\Database\ConnectionInterface;
 use Psr\Log\LoggerInterface;
+use Carbon\Carbon;
 use Laminas\Diactoros\Response\JsonResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -119,7 +120,7 @@ class ExchangeController implements RequestHandlerInterface
                     'coin_amount' => $coinAmount,
                     'points_amount' => $pointsAmount,
                     'status' => 'pending',
-                    'created_at' => now(),
+                    'created_at' => Carbon::now(),
                 ]);
 
                 $this->logger->info('Coin exchange started', [
@@ -139,7 +140,7 @@ class ExchangeController implements RequestHandlerInterface
                         ->update([
                             'status' => 'failed',
                             'error_message' => $apiResult['message'] ?? '未知错误',
-                            'completed_at' => now(),
+                            'completed_at' => Carbon::now(),
                         ]);
 
                     $this->logger->error('Coin exchange API failed', [
@@ -161,7 +162,7 @@ class ExchangeController implements RequestHandlerInterface
                     ->update([
                         'status' => 'success',
                         'merchant_response' => json_encode($apiResult),
-                        'completed_at' => now(),
+                        'completed_at' => Carbon::now(),
                     ]);
 
                 $this->logger->info('Coin exchange completed successfully', [

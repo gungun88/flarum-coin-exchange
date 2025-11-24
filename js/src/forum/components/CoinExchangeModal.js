@@ -154,7 +154,25 @@ export default class CoinExchangeModal extends Modal {
       .catch((error) => {
         // 失败
         this.loading = false;
-        this.error = error.response?.data?.message || error.message || '兑换失败，请稍后再试';
+
+        // 尝试从不同位置获取错误消息
+        let errorMessage = '兑换失败，请稍后再试';
+
+        if (error.response) {
+          // HTTP 错误响应
+          if (error.response.data?.message) {
+            errorMessage = error.response.data.message;
+          } else if (error.response.message) {
+            errorMessage = error.response.message;
+          } else if (typeof error.response.data === 'string') {
+            errorMessage = error.response.data;
+          }
+        } else if (error.message) {
+          // 网络错误或其他错误
+          errorMessage = error.message;
+        }
+
+        this.error = errorMessage;
         m.redraw();
       });
   }

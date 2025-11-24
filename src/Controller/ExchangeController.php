@@ -6,8 +6,8 @@ use Flarum\Http\RequestUtil;
 use Flarum\Settings\SettingsRepositoryInterface;
 use Flarum\User\Exception\PermissionDeniedException;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Database\ConnectionInterface;
+use Psr\Log\LoggerInterface;
 use Laminas\Diactoros\Response\JsonResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -20,9 +20,24 @@ class ExchangeController implements RequestHandlerInterface
      */
     protected $settings;
 
-    public function __construct(SettingsRepositoryInterface $settings)
-    {
+    /**
+     * @var ConnectionInterface
+     */
+    protected $db;
+
+    /**
+     * @var LoggerInterface
+     */
+    protected $logger;
+
+    public function __construct(
+        SettingsRepositoryInterface $settings,
+        ConnectionInterface $db,
+        LoggerInterface $logger
+    ) {
         $this->settings = $settings;
+        $this->db = $db;
+        $this->logger = $logger;
     }
 
     /**
@@ -96,9 +111,9 @@ class ExchangeController implements RequestHandlerInterface
             $pointsAmount = $coinAmount / 10;
 
             // 使用数据库事务确保数据一致性
-            $result = DB::transaction(function () use ($actor, $coinAmount, $pointsAmount, $transactionId, $userMoney) {
+            $result = $this->db->transaction(function () use ($actor, $coinAmount, $pointsAmount, $transactionId, $userMoney) {
                 // 1. 创建兑换记录（pending 状态）
-                $recordId = DB::table('coin_exchange_records')->insertGetId([
+                $recordId = $this->db->table('coin_exchange_records')->insertGetId([
                     'user_id' => $actor->id,
                     'transaction_id' => $transactionId,
                     'coin_amount' => $coinAmount,
@@ -107,7 +122,7 @@ class ExchangeController implements RequestHandlerInterface
                     'created_at' => now(),
                 ]);
 
-                Log::info('Coin exchange started', [
+                $this->logger->info('Coin exchange started', [
                     'record_id' => $recordId,
                     'user_id' => $actor->id,
                     'coin_amount' => $coinAmount,
@@ -119,7 +134,7 @@ class ExchangeController implements RequestHandlerInterface
 
                 if (!$apiResult['success']) {
                     // API 调用失败，更新记录状态
-                    DB::table('coin_exchange_records')
+                    $this->db->table('coin_exchange_records')
                         ->where('id', $recordId)
                         ->update([
                             'status' => 'failed',
@@ -127,7 +142,7 @@ class ExchangeController implements RequestHandlerInterface
                             'completed_at' => now(),
                         ]);
 
-                    Log::error('Coin exchange API failed', [
+                    $this->logger->error('Coin exchange API failed', [
                         'record_id' => $recordId,
                         'error' => $apiResult['message'] ?? '未知错误',
                     ]);
@@ -141,7 +156,7 @@ class ExchangeController implements RequestHandlerInterface
                 $actor->save();
 
                 // 4. 更新兑换记录为成功
-                DB::table('coin_exchange_records')
+                $this->db->table('coin_exchange_records')
                     ->where('id', $recordId)
                     ->update([
                         'status' => 'success',
@@ -149,7 +164,7 @@ class ExchangeController implements RequestHandlerInterface
                         'completed_at' => now(),
                     ]);
 
-                Log::info('Coin exchange completed successfully', [
+                $this->logger->info('Coin exchange completed successfully', [
                     'record_id' => $recordId,
                     'user_id' => $actor->id,
                     'new_balance' => $newBalance,
@@ -171,7 +186,7 @@ class ExchangeController implements RequestHandlerInterface
             return new JsonResponse($result, 200);
 
         } catch (\Exception $e) {
-            Log::error('Coin exchange handler failed', [
+            $this->logger->error('Coin exchange handler failed', [
                 'user_id' => $actor->id ?? 'guest',
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString(),
@@ -282,7 +297,7 @@ class ExchangeController implements RequestHandlerInterface
         $startOfDay = $date . ' 00:00:00';
         $endOfDay = $date . ' 23:59:59';
 
-        $result = DB::table('coin_exchange_records')
+        $result = $this->db->table('coin_exchange_records')
             ->where('user_id', $userId)
             ->where('status', 'success')
             ->whereBetween('created_at', [$startOfDay, $endOfDay])

@@ -1,7 +1,7 @@
 {
     "name": "doingfb/flarum-coin-exchange",
     "description": "Exchange forum coins for merchant platform points (Production Ready)",
-    "version": "1.1.0",
+    "version": "1.2.0",
     "keywords": [
         "flarum",
         "extension",

@@ -135,20 +135,30 @@ class ExchangeController implements RequestHandlerInterface
 
                 if (!$apiResult['success']) {
                     // API 调用失败，更新记录状态
+                    $errorMessage = $apiResult['message'] ?? '未知错误';
+
+                    // 检测是否为邮箱不匹配的错误，提供更友好的提示
+                    if (strpos($errorMessage, '未找到该邮箱') !== false ||
+                        strpos($errorMessage, '邮箱') !== false ||
+                        strpos($errorMessage, '不存在') !== false) {
+                        $errorMessage = "兑换失败：您的论坛邮箱（{$actor->email}）与商家平台账号不匹配。请确保已在商家平台使用相同邮箱注册账号后再进行兑换。";
+                    }
+
                     $this->db->table('coin_exchange_records')
                         ->where('id', $recordId)
                         ->update([
                             'status' => 'failed',
-                            'error_message' => $apiResult['message'] ?? '未知错误',
+                            'error_message' => $errorMessage,
                             'completed_at' => Carbon::now(),
                         ]);
 
                     $this->logger->error('Coin exchange API failed', [
                         'record_id' => $recordId,
-                        'error' => $apiResult['message'] ?? '未知错误',
+                        'user_email' => $actor->email,
+                        'error' => $errorMessage,
                     ]);
 
-                    throw new \Exception($apiResult['message'] ?? '兑换失败');
+                    throw new \Exception($errorMessage);
                 }
 
                 // 3. 扣除用户硬币

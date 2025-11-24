@@ -138,6 +138,7 @@ export default class CoinExchangeModal extends Modal {
         body: {
           coinAmount: this.coinAmount,
         },
+        errorHandler: false, // 禁用 Flarum 全局错误处理
       })
       .then((response) => {
         // 成功

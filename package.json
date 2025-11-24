@@ -1,6 +1,6 @@
 {
   "name": "@doingfb/flarum-coin-exchange",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "Exchange forum coins for merchant platform points",
   "keywords": [
     "flarum-extension"
